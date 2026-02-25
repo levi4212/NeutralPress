@@ -83,6 +83,7 @@ export default async function RootLayout({
     "config/notice.ably.key",
     "config/site.shiki.theme",
     "config/media.customLoader",
+    "config/content.postList.layout",
   );
   cacheLife("max");
 
@@ -102,6 +103,7 @@ export default async function RootLayout({
       ablyApiKey,
       shikiTheme,
       mediaCustomLoader,
+      postListLayout,
     ],
   ] = await Promise.all([
     getActiveMenusForClient(),
@@ -118,6 +120,7 @@ export default async function RootLayout({
       "notice.ably.key",
       "site.shiki.theme",
       "media.customLoader",
+      "content.postList.layout",
     ]),
   ]);
 
@@ -139,6 +142,7 @@ export default async function RootLayout({
     "site.shiki.theme": shikiTheme,
     "analytics.enable": enableAnalytics,
     "media.customLoader": mediaCustomLoader,
+    "content.postList.layout": postListLayout,
   };
 
   return (

@@ -10,8 +10,10 @@ import type {
 import type { BlockComponentProps } from "@/blocks/core/definition";
 import { getBlockRuntimeData } from "@/blocks/core/runtime/envelope";
 import RowGrid, { GridItem } from "@/components/client/layout/RowGrid";
+import ClassicPostCard from "@/components/server/features/posts/ClassicPostCard";
 import EmptyPostCard from "@/components/server/features/posts/EmptyPostCard";
 import PostCard from "@/components/server/features/posts/PostCard";
+import { useConfig } from "@/context/ConfigContext";
 import { createArray } from "@/lib/client/create-array";
 
 /**
@@ -25,9 +27,40 @@ export default function PagedPostsBlock({ block }: BlockComponentProps) {
   const { posts = [], currentPage = 1, totalPages = 1, basePath = "" } = data;
   const content = (block.content as PagedPostsBlockConfig["content"]) || {};
   const searchable = (content.searchable as boolean) || false;
+  const layoutStyle = useConfig("content.postList.layout") as "grid" | "classic";
 
-  // 文章网格组件
-  const PostsGrid = React.useMemo(() => {
+  // 文章组件
+  const PostsView = React.useMemo(() => {
+    if (layoutStyle === "classic") {
+      return (
+        <div className="flex flex-col gap-10 w-full max-w-4xl mx-auto py-4">
+          {posts.map((post, index) => (
+            <ClassicPostCard
+              key={post ? post.slug : `empty-${index}`}
+              title={post.title}
+              slug={post.slug}
+              isPinned={post.isPinned}
+              date={
+                post.publishedAt
+                  ? new Date(post.publishedAt)
+                    .toLocaleDateString("zh-CN", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })
+                    .replace(/\//g, "/")
+                  : ""
+              }
+              category={post.categories}
+              tags={post.tags}
+              cover={post.coverData}
+              summary={post.excerpt || ""}
+            />
+          ))}
+        </div>
+      );
+    }
+
     const rowsToRender = Math.max(1, Math.ceil(posts.length / 4));
 
     return (
@@ -56,12 +89,12 @@ export default function PagedPostsBlock({ block }: BlockComponentProps) {
                         date={
                           post.publishedAt
                             ? new Date(post.publishedAt)
-                                .toLocaleDateString("zh-CN", {
-                                  year: "numeric",
-                                  month: "2-digit",
-                                  day: "2-digit",
-                                })
-                                .replace(/\//g, "/")
+                              .toLocaleDateString("zh-CN", {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                              })
+                              .replace(/\//g, "/")
                             : ""
                         }
                         category={post.categories}
@@ -81,7 +114,7 @@ export default function PagedPostsBlock({ block }: BlockComponentProps) {
           ))}
       </RowGrid>
     );
-  }, [posts]);
+  }, [posts, layoutStyle]);
 
   // 如果启用搜索，用 SearchContent 包裹
   if (searchable) {
@@ -96,6 +129,6 @@ export default function PagedPostsBlock({ block }: BlockComponentProps) {
     );
   }
 
-  // 否则直接显示文章网格
-  return PostsGrid;
+  // 否则直接显示文章内容
+  return PostsView;
 }

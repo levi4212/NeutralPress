@@ -7,8 +7,10 @@ import { searchPosts } from "@/actions/search";
 import HighlightedText from "@/components/client/HighlightedText";
 import RowGrid, { GridItem } from "@/components/client/layout/RowGrid";
 import ViewCountBatchLoader from "@/components/client/logic/ViewCountBatchLoader";
+import ClassicPostCard from "@/components/server/features/posts/ClassicPostCard";
 import EmptyPostCard from "@/components/server/features/posts/EmptyPostCard";
 import PostCard from "@/components/server/features/posts/PostCard";
+import { useConfig } from "@/context/ConfigContext";
 import { useBroadcast } from "@/hooks/use-broadcast";
 import { createArray } from "@/lib/client/create-array";
 import { AutoTransition } from "@/ui/AutoTransition";
@@ -60,6 +62,7 @@ export default function SearchContent({
   const [currentSearchQuery, setCurrentSearchQuery] = useState(searchQuery);
   const [currentSearchToken, setCurrentSearchToken] = useState<string[]>([]);
   const hasSearched = useRef(false); // 跟踪是否执行过搜索
+  const layoutStyle = useConfig("content.postList.layout") as "grid" | "classic";
 
   // 生成或获取 sessionId（在组件挂载时生成一次）
   const [sessionId] = useState(() => {
@@ -130,25 +133,25 @@ export default function SearchContent({
             publishedAt: item.publishedAt ? new Date(item.publishedAt) : null,
             categories: item.categories
               ? item.categories.map((cat) => ({
-                  name: cat.name,
-                  slug: cat.slug,
-                }))
+                name: cat.name,
+                slug: cat.slug,
+              }))
               : [],
             tags: item.tags
               ? item.tags.map((tag) => ({
-                  name: tag.name,
-                  slug: tag.slug,
-                }))
+                name: tag.name,
+                slug: tag.slug,
+              }))
               : [],
             coverData: item.coverData
               ? [
-                  {
-                    url: item.coverData.url,
-                    width: item.coverData.width || undefined,
-                    height: item.coverData.height || undefined,
-                    blur: item.coverData.blur || undefined,
-                  },
-                ]
+                {
+                  url: item.coverData.url,
+                  width: item.coverData.width || undefined,
+                  height: item.coverData.height || undefined,
+                  blur: item.coverData.blur || undefined,
+                },
+              ]
               : undefined,
           }));
 
@@ -329,6 +332,46 @@ export default function SearchContent({
                 {`未找到与 "${currentSearchToken.join("、") || currentSearchQuery}" 相关的文章`}
               </GridItem>
             </RowGrid>
+          ) : layoutStyle === "classic" ? (
+            <div key={`results-${currentSearchQuery}`} className="flex flex-col gap-10 w-full max-w-4xl mx-auto py-4">
+              {posts.map((post, index) => (
+                <ClassicPostCard
+                  key={post ? post.slug : `empty-${index}`}
+                  title={
+                    post.titleHighlight ? (
+                      <HighlightedText html={post.titleHighlight} />
+                    ) : (
+                      post.title
+                    )
+                  }
+                  slug={post.slug}
+                  isPinned={post.isPinned}
+                  date={
+                    post.publishedAt
+                      ? new Date(post.publishedAt)
+                        .toLocaleDateString("zh-CN", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                        })
+                        .replace(/\//g, "/")
+                      : ""
+                  }
+                  category={post.categories}
+                  tags={post.tags}
+                  cover={post.coverData}
+                  summary={
+                    post.excerptHighlight ? (
+                      <HighlightedText html={post.excerptHighlight} />
+                    ) : post.excerpt ? (
+                      post.excerpt
+                    ) : (
+                      ""
+                    )
+                  }
+                />
+              ))}
+            </div>
           ) : (
             <RowGrid key={`results-${currentSearchQuery}`}>
               {Array(rowsToRender)
@@ -361,12 +404,12 @@ export default function SearchContent({
                               date={
                                 post.publishedAt
                                   ? new Date(post.publishedAt)
-                                      .toLocaleDateString("zh-CN", {
-                                        year: "numeric",
-                                        month: "2-digit",
-                                        day: "2-digit",
-                                      })
-                                      .replace(/\//g, "/")
+                                    .toLocaleDateString("zh-CN", {
+                                      year: "numeric",
+                                      month: "2-digit",
+                                      day: "2-digit",
+                                    })
+                                    .replace(/\//g, "/")
                                   : ""
                               }
                               category={post.categories}

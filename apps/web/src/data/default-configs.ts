@@ -266,6 +266,14 @@ export const CONFIG_DEFINITIONS = {
     description:
       "文章版权声明文本模板。{LICENSE} 将被替换为具体的许可证描述文本",
   },
+  "content.postList.layout": {
+    default: "grid" as "grid" | "classic",
+    options: [
+      { value: "grid", label: "卡片网格并排排列 (默认)" },
+      { value: "classic", label: "经典大图列表展示 (ColorDive)" },
+    ],
+    description: "前台文章列表视图（归档、分类、标签页面）的默认排版外观设计",
+  },
   "content.menu.enabled": {
     default: true,
     description: "是否启用文章目录",
