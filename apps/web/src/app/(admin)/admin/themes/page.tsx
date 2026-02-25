@@ -169,9 +169,8 @@ export default function ThemesPage() {
                                         disabled={isActive || isActivating}
                                         loading={isActivating}
                                         onClick={() => handleActivateTheme(theme)}
-                                    >
-                                        {isActive ? "已应用" : "立即应用"}
-                                    </Button>
+                                        label={isActive ? "已应用" : "立即应用"}
+                                    />
                                 </div>
                             </div>
                         </div>
