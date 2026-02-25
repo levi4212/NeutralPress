@@ -18,6 +18,7 @@ import {
   RiMailFill,
   RiMenuFill,
   RiMessageFill,
+  RiPaletteLine,
   RiPriceTag3Fill,
   RiSave3Fill,
   RiSearchEyeFill,
@@ -196,6 +197,12 @@ const AdminSidebarList = [
     role: roles.admin,
   },
   {
+    name: "主题外观",
+    icon: <RiPaletteLine size={"1.5em"} />,
+    href: "/admin/themes",
+    role: roles.admin,
+  },
+  {
     name: "设置",
     icon: <RiSettings4Fill size={"1.5em"} />,
     href: "/admin/settings",
@@ -236,11 +243,10 @@ export default function AdminSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-2 px-3 py-2 shrink-0 transition-all duration-200 ${
-                pathname.startsWith(item.href)
+              className={`flex items-center gap-2 px-3 py-2 shrink-0 transition-all duration-200 ${pathname.startsWith(item.href)
                   ? "bg-primary text-primary-foreground shadow-md"
                   : "bg-muted/50 hover:bg-muted"
-              }`}
+                }`}
             >
               <div className="flex items-center justify-center">
                 {item.icon}

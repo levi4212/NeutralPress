@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { RiRefreshLine, RiSaveLine } from "@remixicon/react";
+import { RiRefreshLine, RiSaveLine, RiPaletteLine } from "@remixicon/react";
+import Link from "next/link";
 
 import { getSettings, updateSettings } from "@/actions/setting";
 import type { SettingSelectMessage } from "@/app/(admin)/admin/settings/SettingsSelect";
@@ -1014,8 +1015,17 @@ export default function SettingSheet() {
                 return (
                   <div key={setting.key} className="space-y-2">
                     <div className="flex flex-col gap-1 mb-2">
-                      <div className="text-lg font-medium text-foreground">
-                        {setting.key}
+                      <div className="flex items-center gap-2">
+                        <div className="text-lg font-medium text-foreground">
+                          {setting.key}
+                        </div>
+                        {setting.key === "site.color" && (
+                          <Link href="/admin/themes">
+                            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-md ml-2 hover:bg-primary/20 transition-colors flex items-center gap-1 cursor-pointer">
+                              <RiPaletteLine className="w-3 h-3" /> 使用主题外观管理器
+                            </span>
+                          </Link>
+                        )}
                       </div>
                       {setting.description && (
                         <div className="text-sm text-muted-foreground">

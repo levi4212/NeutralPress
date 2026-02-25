@@ -59,9 +59,12 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* 自定义滚动条样式 */
@@ -73,21 +76,17 @@
 
 ::-webkit-scrollbar-track,
 .scrollbar-default::-webkit-scrollbar-track {
-  background: color-mix(
-    in srgb,
-    var(--color-muted-foreground),
-    transparent 60%
-  );
+  background: color-mix(in srgb,
+      var(--color-muted-foreground),
+      transparent 60%);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb,
 .scrollbar-default::-webkit-scrollbar-thumb {
-  background: color-mix(
-    in srgb,
-    var(--color-muted-foreground),
-    transparent 60%
-  );
+  background: color-mix(in srgb,
+      var(--color-muted-foreground),
+      transparent 60%);
   border-radius: 4px;
   opacity: 0.6;
   transition: opacity 0.2s ease;
@@ -107,31 +106,23 @@
 /* Firefox 滚动条样式 */
 * {
   scrollbar-width: thin;
-  scrollbar-color: color-mix(
-      in srgb,
+  scrollbar-color: color-mix(in srgb,
       var(--color-muted-foreground),
-      transparent 60%
-    )
-    var(--color-background);
+      transparent 60%) var(--color-background);
 }
 
 .scrollbar-default {
   scrollbar-width: thin;
-  scrollbar-color: color-mix(
-      in srgb,
+  scrollbar-color: color-mix(in srgb,
       var(--color-muted-foreground),
-      transparent 60%
-    )
-    var(--color-background);
+      transparent 60%) var(--color-background);
 }
 
 /* 暗色模式下的滚动条优化 */
 .dark ::-webkit-scrollbar-thumb {
-  background: color-mix(
-    in srgb,
-    var(--color-muted-foreground),
-    transparent 60%
-  );
+  background: color-mix(in srgb,
+      var(--color-muted-foreground),
+      transparent 60%);
   opacity: 0.5;
 }
 
@@ -141,12 +132,9 @@
 }
 
 .dark {
-  scrollbar-color: color-mix(
-      in srgb,
+  scrollbar-color: color-mix(in srgb,
       var(--color-muted-foreground),
-      transparent 60%
-    )
-    var(--color-background);
+      transparent 60%) var(--color-background);
 }
 
 .loading-dots span {
@@ -157,9 +145,11 @@
   0% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.25;
   }
+
   100% {
     opacity: 1;
   }
@@ -180,6 +170,7 @@
 ::target-text {
   @apply bg-primary/50 text-foreground;
 }
+
 /* 搜索结果高亮样式 */
 mark {
   color: var(--color-primary);
